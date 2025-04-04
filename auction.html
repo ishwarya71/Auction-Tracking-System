@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auctions - Auction Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Available Auctions</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="auction.html">Auctions</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="profile.html">Profile</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="auctions">
+        <h2>Browse Auctions</h2>
+        <div id="auction-list" class="auction-list"></div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Auction Tracking System</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const auctions = [
+                { name: "Vintage Car", bid: 15000, desc: "A classic 1960s vintage car in excellent condition.", image: "vintage_car.jpg" },
+                { name: "Antique Clock", bid: 2500, desc: "A rare handcrafted antique clock from the 18th century.", image: "antique_clock.jpg" },
+                { name: "Rare Coin Collection", bid: 1200, desc: "A rare collection of coins from around the world.", image: "rare_coins.jpg" }
+            ];
+
+            // Find the auction list container
+            const auctionList = document.getElementById("auction-list");
+
+            // Display all auction items
+            if (auctionList) {
+                auctionList.innerHTML = ""; // Clear existing content
+
+                auctions.forEach(auction => {
+                    let storedBid = localStorage.getItem(auction.name) || auction.bid; // Load saved bid
+                    let div = document.createElement("div");
+                    div.classList.add("auction-item");
+                    div.innerHTML = `
+                        <h3>${auction.name}</h3>
+                        <p>Current Bid: $<span class="bid-amount">${storedBid}</span></p>
+                        <a href="auction-details.html?name=${encodeURIComponent(auction.name)}&bid=${storedBid}&desc=${encodeURIComponent(auction.desc)}&image=${encodeURIComponent(auction.image)}">View Details</a>
+                    `;
+                    auctionList.appendChild(div);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
