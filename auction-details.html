@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auction Details - Auction Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Auction Details</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="auction.html">Auctions</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="profile.html">Profile</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="auction-details">
+        <h2 id="item-name">Item Name</h2>
+        <img id="item-image" src="default.jpg" alt="Auction Item" class="auction-img" />
+        <p id="item-desc">No description available.</p>
+        <p id="current-bid">Current Bid: $0</p>
+        <button id="place-bid">Place a Bid</button>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Auction Tracking System</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const params = new URLSearchParams(window.location.search);
+
+            let itemName = params.get("name") || "Unknown Item";
+            let currentBid = localStorage.getItem(itemName) || params.get("bid") || "0";
+            let itemDesc = params.get("desc") || "No description available.";
+            let itemImage = "default.jpg";  // Default fallback image
+
+            // Assign correct image based on the item name
+            if (itemName === "Vintage Car") {
+                itemImage = "car.jpg";
+            } else if (itemName === "Antique Clock") {
+                itemImage = "clock.jpg";
+            } else if (itemName === "Rare Coin Collection") {
+                itemImage = "coin.jpg";
+            }
+
+            // Display the auction details
+            document.getElementById("item-name").textContent = itemName;
+            document.getElementById("current-bid").textContent = `Current Bid: $${currentBid}`;
+            document.getElementById("item-desc").textContent = itemDesc;
+            document.getElementById("item-image").src = itemImage;
+            document.getElementById("item-image").alt = itemName;
+
+            // Handle Place Bid functionality
+            document.getElementById("place-bid").addEventListener("click", () => {
+                let newBid = prompt(`Enter your bid amount for ${itemName} (Current: $${currentBid}):`);
+                newBid = parseInt(newBid);
+
+                if (!isNaN(newBid) && newBid > currentBid) {
+                    alert("Bid placed successfully!");
+                    localStorage.setItem(itemName, newBid); // ✅ Save new bid
+                    document.getElementById("current-bid").textContent = `Current Bid: $${newBid}`;
+                } else {
+                    alert("Invalid bid! Your bid must be higher than the current bid.");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
